@@ -20,10 +20,10 @@ def staircase(n: int,whichFxn:str) -> int:
       ValueError: If n is negative.
   """
 
-  if n < 0:
+  if n < 0:# belt and suspenders. redundant vs main.
     raise ValueError("n must be a non-negative integer.")
 
-  assert(whichFxn in {"memo", "plain", "fib"},f"wonky whichFxn input.")
+  assert(whichFxn in {"memo", "plain", "fib"},f"wonky {whichFxn} input.") # belt and suspenders. redundant vs main.
 
   # Use memoization for efficiency (avoiding redundant calculations)
   memo = {0: 1, 1: 1, 2: 2}  # Base cases for 0, 1, and 2 steps
@@ -36,7 +36,7 @@ def staircase(n: int,whichFxn:str) -> int:
          memo[n] = helper(n - 1) + helper(n - 2)
          return memo[n]
 
- if whichFxn.lower() =="memo":
+ elif whichFxn.lower() =="memo":
      def recursive_plain(n):
          for i in range(n):
          if n==1:
@@ -51,11 +51,14 @@ def staircase(n: int,whichFxn:str) -> int:
               ways=staircase(n-1)+staircase(n-2) #recursion!
               return(ways)
 
-if whichFxn.lower() =="fib":
+elif whichFxn.lower() =="fib":
        def fibo_stairs:
          sqrt_5 = 5 ** 0.5
          fib_n = (((1 + sqrt_5)/2) ** (n+1) - ((1-sqrt_5)/2) ** (n + 1))/sqrt_5
          return int(fib_n)
+
+else:
+  raise ValueError(f"Something strange happened with whichFxn: {str(whichFxn)}")
 
 
 # Unit tests (use 'test_staircase.py')
@@ -79,7 +82,15 @@ def main():
     except ValueError as e:
       print(f"Error: {e}")
 
-  print(f"Number of ways to climb {n} stairs: {staircase(n)}")
+    try:
+      whichFxn = str(input("Enter the number of stairs (non-negative integer): "))
+      if whichFxn not in {"memo", "plain", "fib"}: #},f"wonky {whichFxn} input."
+        raise ValueError(f"wonky {whichFxn} input. Expects memo plain or fib.")
+      break
+    except ValueError as e:
+      print(f"Error: {e}")
+
+  print(f"Number of ways to climb {n} stairs: {staircase(n,whichFxn)}")
 
 if __name__ == "__main__":
   main()
