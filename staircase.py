@@ -1,63 +1,53 @@
 #!/usr/bin/env python3
-#pip install py-fibonacci #for reals.
-#from fibonacci import fibonacci
 
-from typing import Optional, Union
-
-def staircase(n: int,whichFxn:str) -> int:
+def staircase(n: int, whichFxn: str = "fib") -> int:
   """
   Calculates the number of ways to climb a staircase with n steps.
+  You can climb one or two stes at a time.
+  This follows the Fibonacci sequence.
 
   Args:
       n: The number of steps in the staircase (must be a non-negative integer).
       whichFxn: Which function to use. "memo", "plain" or "fib"
       
   Returns:
-      The number of ways to climb the staircase.
+      The number of ways to climb the staircase. (
 
   Raises:
       ValueError: If n is negative.
   """
 
-  if n < 0:# belt and suspenders. redundant vs main.
+  if n < 0:
     raise ValueError("n must be a non-negative integer.")
-
-  assert(whichFxn in {"memo", "plain", "fib"},f"wonky {whichFxn} input.") # belt and suspenders. redundant vs main.
-
-  # Use memoization for efficiency (avoiding redundant calculations)
-  memo = {0: 1, 1: 1, 2: 2}  # Base cases for 0, 1, and 2 steps
-
+  
   if whichFxn.lower() =="memo":
-       # Recursive approach with memoization
+       # Recursive approach with memoization for efficiency
        def recursiveWithMemo(n):
+         memo = {0: 1, 1: 1, 2: 2}  # Base cases for 0, 1, and 2 steps
          if n in memo:
            return memo[n]
          memo[n] = helper(n - 1) + helper(n - 2)
          return memo[n]
 
- elif whichFxn.lower() =="memo":
+ elif whichFxn.lower() =="plain":
      def recursive_plain(n):
          for i in range(n):
          if n==1:
               return 1
          elif n==2:
               return 2
-         elif n==0:
-              return 1 # There is one way to go zero steps. n is supposed to be a positive integer...
-         elif n<0:
-              raise ValueError("Negative steps does not make much sense in the context of climbing. n is supposed to be a positive integer...")
+         elif n<=0:
+              raise ValueError("n should be a positive integer.")
          else:
-              ways=staircase(n-1)+staircase(n-2) #recursion!
+              ways=staircase(n-1)+staircase(n-2) 
               return(ways)
 
 elif whichFxn.lower() =="fib":
-       def fibo_stairs:
+       def fibo_stairs(n):
          sqrt_5 = 5 ** 0.5
          fib_n = (((1 + sqrt_5)/2) ** (n+1) - ((1-sqrt_5)/2) ** (n + 1))/sqrt_5
+         # alternative with golden ratio: fib_n = round(((1.618034)**n-(1-1.618034)**n)/sqrt_5)
          return int(fib_n)
-
-else:
-  raise ValueError(f"Something strange happened with whichFxn: {str(whichFxn)}")
 
 
 # Unit tests (use 'test_staircase.py')
@@ -67,6 +57,7 @@ def test_staircase():
   assert staircase(2) == 2
   assert staircase(3) == 3
   assert staircase(4) == 5
+  assert staircase(4) == 8
 
 def main():
   """
@@ -82,9 +73,9 @@ def main():
       print(f"Error: {e}")
 
     try:
-      whichFxn = str(input("Enter the number of stairs (non-negative integer): "))
-      if whichFxn not in {"memo", "plain", "fib"}: #},f"wonky {whichFxn} input."
-        raise ValueError(f"wonky {whichFxn} input. Expects memo plain or fib.")
+      whichFxn = str(input("Choose a function. Expects 'memo', 'plain', or 'fib': "))
+      if whichFxn not in {"memo", "plain", "fib"}: 
+        raise ValueError(f"Bad function input. Expects 'memo', 'plain', or 'fib'.")
       break
     except ValueError as e:
       print(f"Error: {e}")
