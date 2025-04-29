@@ -1,2 +1,2 @@
 # StairCaseRecursionFibo
-you know the vibes
+Demonstration code.
