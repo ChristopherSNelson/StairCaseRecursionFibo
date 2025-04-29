@@ -26,7 +26,7 @@ def staircase(n: int, whichFxn: str = "fib") -> int:
          memo = {0: 1, 1: 1, 2: 2}  # Base cases for 0, 1, and 2 steps
          if n in memo:
            return memo[n]
-         memo[n] = helper(n - 1) + helper(n - 2)
+         memo[n] = recursiveWithMemo(n - 1) + recursiveWithMemo(n - 2)
          return memo[n]
 
  elif whichFxn.lower() =="plain":
@@ -49,8 +49,6 @@ elif whichFxn.lower() =="fib":
          # alternative with golden ratio: fib_n = round(((1.618034)**n-(1-1.618034)**n)/sqrt_5)
          return int(fib_n)
 
-
-# Unit tests (use 'test_staircase.py')
 def test_staircase():
   assert staircase(0) == 1
   assert staircase(1) == 1
@@ -58,6 +56,7 @@ def test_staircase():
   assert staircase(3) == 3
   assert staircase(4) == 5
   assert staircase(4) == 8
+  
 
 def main():
   """
@@ -83,5 +82,6 @@ def main():
   print(f"Number of ways to climb {n} stairs: {staircase(n,whichFxn)}")
 
 if __name__ == "__main__":
+  test_staircase()
   main()
 
